@@ -8,7 +8,9 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Notify", "0.7")
 from gi.repository import Gdk, GLib, GObject, Gtk, Nautilus, Notify
 
-from utils.translate import translate
+from utils import language
+
+_ = language.setup_translation(__file__)
 
 
 class CopyPathExtension(GObject.GObject, Nautilus.MenuProvider):
@@ -34,8 +36,8 @@ class CopyPathExtension(GObject.GObject, Nautilus.MenuProvider):
         clipboard.set(file_path)
 
         notification = Notify.Notification.new(
-            translate("copy_full_path_success_notify_title"),
-            translate("copy_full_path_success_notify_text", file_path),
+            _("copy_full_path_success_notify_title"),
+            _("copy_full_path_success_notify_text").format(file_path=file_path),
             "dialog-information"
         )
         notification.set_timeout(5000)
@@ -55,8 +57,8 @@ class CopyPathExtension(GObject.GObject, Nautilus.MenuProvider):
 
         item = Nautilus.MenuItem(
             name="Nautilus::ext::copy_full_path",
-            label=translate("copy_full_path_menu_item_label"),
-            tip=translate("copy_full_path_menu_item_tip"),
+            label=_("copy_full_path_menu_item_label"),
+            tip=_("copy_full_path_menu_item_tip"),
         )
         item.connect("activate", self.menu_activate_cb, file)
 
